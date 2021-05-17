@@ -14,7 +14,9 @@ def main(sc):
     rddPlaces = sc.textFile('/data/share/bdm/core-places-nyc.csv')
     rddPattern = sc.textFile('/data/share/bdm/weekly-patterns-nyc-2019-2020/*')
     OUTPUT_PREFIX = sys.argv[1]
-    #TO_BE_COMPLETED
+
+
+    
     CAT_CODES = {'445210', '445110', '722410', '452311', '722513', '445120', '446110', '445299', '722515', '311811', '722511', '445230', '446191', '445291', '445220', '452210', '445292'}
     CAT_GROUP = {'452210': 0, '452311': 0, '445120': 1, '722410': 2, '722511': 3, '722513': 4, '446110': 5, '446191': 5,  '722515': 6, '311811': 6, '445210': 7, '445299': 7, '445230': 7, '445291': 7, '445220': 7, '445292': 7,'445110': 8}
     
@@ -74,18 +76,18 @@ def main(sc):
     
 
     ##########
-    def computeStats(groupCount, _, records):
+   # def computeStats(groupCount, _, records):
         #TO_BE_COMPLETED
-       for row in records:
-                group = row[0][0]
-                count = groupCount[group]
-                compute_list = list(row[1]) + list(np.zeros(count - len(list(row[1]))))
-                median = np.median(compute_list)
-                stdev = np.std(compute_list)
-                low, high = max(0, median - stdev), max(0, median + stdev)
-                yield row[0], (median, low, high)
-    rddH = rddG.groupByKey() \
-        .mapPartitionsWithIndex(functools.partial(computeStats, groupCount))
+    #   for row in records:
+#                group = row[0][0]
+ #               count = groupCount[group]
+  #              compute_list = list(row[1]) + list(np.zeros(count - len(list(row[1]))))
+   #             median = np.median(compute_list)
+    #            stdev = np.std(compute_list)
+     #           low, high = max(0, median - stdev), max(0, median + stdev)
+      #          yield row[0], (median, low, high)
+    #rddH = rddG.groupByKey() \
+     #   .mapPartitionsWithIndex(functools.partial(computeStats, groupCount))
 
 
 
