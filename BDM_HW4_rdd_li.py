@@ -26,9 +26,9 @@ def main(sc):
     def filterPOIs(_, lines):
       # TO_BE_COMPLETED
         reader = csv.reader(lines)
-        for row in reader:
-           if row[9] in CAT_CODES:
-               yield (row[0], CAT_GROUP[row[9]]) # (placekey, group_id)    
+        for line in reader:
+           if line[9] in CAT_CODES:
+               yield line[0], CAT_GROUP[row[9]] # (placekey, group_id)    
 
     rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
         .cache()
@@ -93,7 +93,7 @@ def main(sc):
 
     ##################
     rddI = rddG.groupByKey() \
-        .mapPartitionsWithIndex(functools.partial(computeStatsOutputCsv, groupCount))
+        .mapPartitionsWithIndex(functools.partial(computeStatsOutput, groupCount))
 
 
     #######
