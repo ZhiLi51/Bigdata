@@ -1,5 +1,7 @@
 from pyspark import SparkContext
 import datetime
+from datetime import datetime
+from datetime import timedelta
 import csv
 import functools
 import json
@@ -76,24 +78,27 @@ def main(sc):
     
 
     ##########
-   # def computeStats(groupCount, _, records):
+    def computeStats(groupCount, _, records):
         #TO_BE_COMPLETED
-    #   for row in records:
-#                group = row[0][0]
- #               count = groupCount[group]
-  #              compute_list = list(row[1]) + list(np.zeros(count - len(list(row[1]))))
-   #             median = np.median(compute_list)
-    #            stdev = np.std(compute_list)
-     #           low, high = max(0, median - stdev), max(0, median + stdev)
-      #          yield row[0], (median, low, high)
-    #rddH = rddG.groupByKey() \
-     #   .mapPartitionsWithIndex(functools.partial(computeStats, groupCount))
+       for row in records:
+                group = row[0][0]
+                count = groupCount[group]
+                compute_list = list(row[1]) + list(np.zeros(count - len(list(row[1]))))
+                median = np.median(compute_list)
+                stdev = np.std(compute_list)
+                low, high = max(0, median - stdev), max(0, median + stdev)
+                yield row[0], (median, low, high)
+    rddH = rddG.groupByKey() \
+        .mapPartitionsWithIndex(functools.partial(computeStats, groupCount))
 
 
 
     ##################
-    rddI = rddG.groupByKey() \
-        .mapPartitionsWithIndex(functools.partial(computeStatsOutput, groupCount))
+    def to_csv_I(line):       
+      date = datetime.strptime("2019-01-01","%Y-%m-%d") + timedelta(days=line[0][1])
+      return line[0][0],  ",".join([str(date.year), str("2020" + date.strftime("%Y-%m-%d")[4:]), str(round(line[1][0])), str(round(line[1][1])), str(round(line[1][2]))])
+
+    rddI = rddH.map(to_csv_I)
 
 
     #######
