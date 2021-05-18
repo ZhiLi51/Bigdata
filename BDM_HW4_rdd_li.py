@@ -28,12 +28,12 @@ def main(sc):
     def filterPOIs(_, lines):
       # TO_BE_COMPLETED
         reader = csv.reader(lines)
-        for line in reader:
-           if line[9] in CAT_CODES:
-               yield line[0], CAT_GROUP[row[9]] # (placekey, group_id)    
+        for row in reader:
+           if row[9] in CAT_CODES:
+               yield (row[0], CAT_GROUP[row[9]]) # (placekey, group_id)
 
     rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
-        .cache()
+            .cache()
 
     ####################
     storeGroup = dict(rddD.collect())
@@ -71,7 +71,7 @@ def main(sc):
                       yield (group_id, delta), visits_by_day[index]
 
     rddG = rddPattern \
-        .mapPartitionsWithIndex(functools.partial(extractVisits, storeGroup))
+            .mapPartitionsWithIndex(functools.partial(extractVisits, storeGroup))
 
 
 
