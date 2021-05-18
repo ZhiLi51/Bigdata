@@ -30,7 +30,7 @@ def main(sc):
            if row[9] in CAT_CODES:
                yield (row[0], CAT_GROUP[row[9]]) # (placekey, group_id)    
 
-      rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
+    rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
         .cache()
 
     ####################
