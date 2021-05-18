@@ -30,7 +30,7 @@ def main(sc):
         reader = csv.reader(lines)
         for row in reader:
            if row[9] in CAT_CODES:
-               yield (row[0], CAT_GROUP[row[9]]) # (placekey, group_id)
+               yield (row[0], int(CAT_GROUP[row[9]])) # (placekey, group_id)
 
     rddD = rddPlaces.mapPartitionsWithIndex(filterPOIs) \
             .cache()
