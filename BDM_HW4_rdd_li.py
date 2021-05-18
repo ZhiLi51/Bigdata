@@ -61,13 +61,13 @@ def main(sc):
           placekey, date_range_start, raw_visit_counts, visits_by_day = line[0],line[12],line[14],json.loads(line[16])
           if placekey in storeGroup.keys():
               group_id = storeGroup[placekey]
-              start_date = datetime.datetime.strptime(date_range_start[:10], "%Y-%m-%d")
+              start_date = datetime.strptime(date_range_start[:10], "%Y-%m-%d")
               dates = []
               for _ in range(7):
-                dates.append(str(start_date + datetime.timedelta(days=_))[:10])
+                dates.append(str(start_date + timedelta(days=_))[:10])
               for index, date in enumerate(dates):
                   if date[:4] in ['2019', '2020']:
-                      delta = (datetime.datetime.strptime(date, "%Y-%m-%d") - datetime.datetime(2019, 1, 1)).days                 
+                      delta = (datetime.strptime(date, "%Y-%m-%d") - datetime(2019, 1, 1)).days                 
                       yield (group_id, delta), visits_by_day[index]
 
     rddG = rddPattern \
